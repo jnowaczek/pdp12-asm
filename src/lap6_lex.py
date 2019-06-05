@@ -7,6 +7,7 @@ def lap6_lex():
     states = (
         ('lmode', 'inclusive'),
         ('pmode', 'inclusive'),
+        ('comment', 'exclusive')
     )
 
     tokens = (
@@ -23,7 +24,7 @@ def lap6_lex():
         'PLUS',
         'MINUS',
         'DOT',
-        'SLASH',
+        'COMMENT',
         'TAPE_DIRECTION',
         'SEMICOLON',
         'SPACE',
@@ -225,40 +226,50 @@ def lap6_lex():
         'L_SFA',
     )
 
-    t_ANY_PLUS = r'\+'
-    t_ANY_MINUS = r'\-'
-    t_ANY_EXCLAMATION = r'\!'
-    t_ANY_COMMA = r'\,'
-    t_ANY_EQUALS = r'\='
-    t_ANY_SEMICOLON = r'\;'
-    t_ANY_ASTERISK = r'\*'
-    t_ANY_DOT = r'\.'
-    t_ANY_BACKSLASH = r'\\'
-    t_ANY_SLASH = r'\/'
-    t_ANY_AMPERSAND = r'\&'
+    t_PLUS = r'\+'
+    t_MINUS = r'\-'
+    t_EXCLAMATION = r'\!'
+    t_COMMA = r'\,'
+    t_EQUALS = r'\='
+    t_SEMICOLON = r'\;'
+    t_ASTERISK = r'\*'
+    t_DOT = r'\.'
+
+    def t_COMMENT(t):
+        r'\/[^\r\n|\r|\n]*'
+        t.lexer.push_state('comment')
+        return t
+
+    def t_comment_newline(t):
+        r'[\r\n|\r|\n]+'
+        t.lexer.lineno += len(t.value)
+        t.lexer.pop_state()
+
+    t_BACKSLASH = r'\\'
+    t_AMPERSAND = r'\&'
 
     t_lmode_PMODE = r'\bPMODE\b'
     t_pmode_LMODE = r'\bLMODE\b'
-    t_ANY_SEGMNT = r'\bSEGMNT\b'
-    t_ANY_FIELD = r'\bFIELD\b'
-    t_ANY_PAGE = r'\bPAGE\b'
-    t_ANY_LISTAPE = r'\bLISTAPE\b'
-    t_ANY_DECIMAL = r'\bDECIMAL\b'
-    t_ANY_OCTAL = r'\bOCTAL\b'
-    t_ANY_NOLIST = r'\bNOLIST\b'
-    t_ANY_LIST = r'\bLIST\b'
-    t_ANY_TEXT = r'\bTEXT\b'
-    t_ANY_EJECT = r'\bEJECT\b'
-    t_ANY_ASMIFZ = r'\bASMIFZ\b'
-    t_ANY_ASMIFN = r'\bASMIFN\b'
-    t_ANY_ASMIFM = r'\bASMIFM\b'
-    t_ANY_ASMSKP = r'\bASMSKP\b'
-    t_ANY_SAVSYM = r'\bSAVSYM\b'
-    t_ANY_LODSYM = r'\bLODSYM\b'
+    t_SEGMNT = r'\bSEGMNT\b'
+    t_FIELD = r'\bFIELD\b'
+    t_PAGE = r'\bPAGE\b'
+    t_LISTAPE = r'\bLISTAPE\b'
+    t_DECIMAL = r'\bDECIMAL\b'
+    t_OCTAL = r'\bOCTAL\b'
+    t_NOLIST = r'\bNOLIST\b'
+    t_LIST = r'\bLIST\b'
+    t_TEXT = r'\bTEXT\b'
+    t_EJECT = r'\bEJECT\b'
+    t_ASMIFZ = r'\bASMIFZ\b'
+    t_ASMIFN = r'\bASMIFN\b'
+    t_ASMIFM = r'\bASMIFM\b'
+    t_ASMSKP = r'\bASMSKP\b'
+    t_SAVSYM = r'\bSAVSYM\b'
+    t_LODSYM = r'\bLODSYM\b'
     t_pmode_INDIRECT = r'\bI\b'
     t_pmode_ZERO_PAGE = r'\bZ\b'
 
-    def t_ANY_NUMBER(t):
+    def t_NUMBER(t):
         r'\d+'
         if number_format == 'octal':
             t.value = int(t.value, base=8)
@@ -268,11 +279,11 @@ def lap6_lex():
 
     t_SYMBOL = r'[a-zA-Z][a-zA-Z0-9]*'
 
-    def t_ANY_newline(t):
+    def t_newline(t):
         r'\n+'
         t.lexer.lineno += len(t.value)
 
-    t_ignore = ' `\t'
+    t_ANY_ignore = ' \t'
 
     def t_ANY_error(t):
         print("Illegal character '%s'" % t.value[0])
