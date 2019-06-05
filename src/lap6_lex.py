@@ -348,6 +348,99 @@ def lap6_lex():
     t_pmode_P_RIB = r'\bRIB\b'
     t_pmode_P_LINC = r'\bLINC\b'
 
+    ##########################
+    # LINC Mode Instructions #
+    ##########################
+
+    # Reference page C-9 of "LAP6-DIAL Programmer's Reference Manual"
+    # Add
+    t_lmode_L_ADD = r'\bADD\b'
+    t_lmode_L_ADA = r'\bADA\b'
+    t_lmode_L_ADM = r'\bADM\b'
+    t_lmode_L_LAM = r'\bLAM\b'
+
+    # Multiply
+    t_lmode_L_MUL = r'\bMUL\b'
+
+    # Load
+    t_lmode_L_LDA = r'\bLDA\b'
+    t_lmode_L_LDH = r'\bLDH\b'
+
+    # Store
+    t_lmode_L_STC = r'\bSTC\b'
+    t_lmode_L_STA = r'\bSTA\b'
+    t_lmode_L_STH = r'\bSTH\b'
+
+    # Shift/Rotate
+    t_lmode_L_ROL = r'\bROL\b'
+    t_lmode_L_ROR = r'\bROR\b'
+    t_lmode_L_SCR = r'\bSCR\b'
+
+    # Operate
+    t_lmode_L_HLT = r'\bHLT\b'
+    t_lmode_L_NOP = r'\bNOP\b'
+    t_lmode_L_CLR = r'\bCLR\b'
+    t_lmode_L_SET = r'\bSET\b'
+    t_lmode_L_JMP = r'\bJMP\b'
+    t_lmode_L_QAC = r'\bQAC\b'
+
+    # Logical Operations
+    t_lmode_L_BCL = r'\bBCL\b'
+    t_lmode_L_BSE = r'\bBSE\b'
+    t_lmode_L_BCO = r'\bBCO\b'
+    t_lmode_L_COM = r'\bCOM\b'
+
+    # Skip
+    t_lmode_L_SAE = r'\bSAE\b'
+    t_lmode_L_SHD = r'\bSHD\b'
+    t_lmode_L_SNS = r'\bSNS\b'
+    t_lmode_L_SKP = r'\bSKP\b'
+    t_lmode_L_AZE = r'\bAZE\b'
+    t_lmode_L_APO = r'\bAPO\b'
+    t_lmode_L_LZE = r'\bLZE\b'
+    t_lmode_L_FLO = r'\bFLO\b'
+    t_lmode_L_QLZ = r'\bQLZ\b'
+    t_lmode_L_SXL = r'\bSXL\b'
+    t_lmode_L_KST = r'\bKST\b'
+    t_lmode_L_SRO = r'\bSRO\b'
+    t_lmode_L_XSK = r'\bXSK\b'
+    t_lmode_L_STD = r'\bSTD\b'
+
+    # Input/Output
+    t_lmode_L_ATR = r'\bATR\b'
+    t_lmode_L_RTA = r'\bRTA\b'
+    t_lmode_L_SAM = r'\bSAM\b'
+    t_lmode_L_DIS = r'\bDIS\b'
+    t_lmode_L_DSC = r'\bDSC\b'
+    t_lmode_L_PDP = r'\bPDP\b'
+    t_lmode_L_RSW = r'\bRSW\b'
+    t_lmode_L_LSW = r'\bLSW\b'
+    t_lmode_L_IOB = r'\bIOB\b'
+
+    # Memory
+    t_lmode_L_LIF = r'\bLIF\b'
+    t_lmode_L_LDF = r'\bLDF\b'
+
+    # LINC Tape
+    t_lmode_L_RDE = r'\bRDE\b'
+    t_lmode_L_RDC = r'\bRDC\b'
+    t_lmode_L_RCG = r'\bRCG\b'
+    t_lmode_L_WRI = r'\bWRI\b'
+    t_lmode_L_WRC = r'\bWRC\b'
+    t_lmode_L_WCG = r'\bWCG\b'
+    t_lmode_L_CHK = r'\bCHK\b'
+    t_lmode_L_MTB = r'\bMTB\b'
+    t_lmode_L_XOA = r'\bXOA\b'
+
+    # Extended Operations
+    t_lmode_L_ESF = r'\bESF\b'
+    t_lmode_L_TAC = r'\bTAC\b'
+    t_lmode_L_TMA = r'\bTMA\b'
+    t_lmode_L_AXO = r'\bAXO\b'
+    t_lmode_L_DJR = r'\bDJR\b'
+    t_lmode_L_MSC = r'\bMSC\b'
+    t_lmode_L_SFA = r'\bSFA\b'
+
     instance = lex.lex()
     instance.begin('pmode')
     return instance
@@ -355,7 +448,7 @@ def lap6_lex():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('../test/test.pal') as listing:
+    with open('../test/FRQANA') as listing:
         lexer.input(listing.read())
 
     for token in lexer:
