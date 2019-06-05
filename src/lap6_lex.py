@@ -248,8 +248,16 @@ def lap6_lex():
     t_BACKSLASH = r'\\'
     t_AMPERSAND = r'\&'
 
-    t_lmode_PMODE = r'\bPMODE\b'
-    t_pmode_LMODE = r'\bLMODE\b'
+    def t_lmode_PMODE(t):
+        r'\bPMODE\b'
+        t.lexer.begin('pmode')
+        return t
+
+    def t_pmode_LMODE(t):
+        r'\bLMODE\b'
+        t.lexer.begin('lmode')
+        return t
+
     t_SEGMNT = r'\bSEGMNT\b'
     t_FIELD = r'\bFIELD\b'
     t_PAGE = r'\bPAGE\b'
