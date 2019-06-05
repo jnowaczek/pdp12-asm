@@ -25,7 +25,6 @@ def lap6_lex():
         'DOT',
         'SLASH',
         'TAPE_DIRECTION',
-        'INDIRECT',
         'SEMICOLON',
         'SPACE',
         'AMPERSAND',
@@ -38,24 +37,25 @@ def lap6_lex():
 
         # Reference page C-2 of "LAP6-DIAL Programmer's Reference Manual"
 
-        'PMODE',
-        'LMODE',
-        'SEGMNT',
-        'FIELD',
-        'PAGE',
-        'LISTAPE',
-        'DECIMAL',
-        'OCTAL',
-        'NOLIST',
-        'LIST',
-        'TEXT',
-        'EJECT',
         'ASMIFZ',
         'ASMIFN',
         'ASMIFM',
         'ASMSKP',
-        'SAVSYM',
+        'DECIMAL',
+        'EJECT',
+        'FIELD',
+        'INDIRECT',
+        'LIST',
+        'LISTAPE',
+        'LMODE',
         'LODSYM',
+        'NOLIST',
+        'OCTAL',
+        'PAGE',
+        'PMODE',
+        'SAVSYM',
+        'SEGMNT',
+        'TEXT',
         'ZERO_PAGE',
 
         # Other
@@ -68,74 +68,161 @@ def lap6_lex():
 
         # Reference page C-7 of "LAP6-DIAL Programmer's Reference Manual"
         # Memory Reference Instructions
-        'AND',
-        'TAD',
-        'ISZ',
-        'DCA',
-        'JMS',
-        'JMP',
+        'P_AND',
+        'P_TAD',
+        'P_ISZ',
+        'P_DCA',
+        'P_JMS',
+        'P_JMP',
 
         # Group 1 Operate Microinstructions
-        'NOP',
-        'IAC',
-        'RAL',
-        'RTL',
-        'RAR',
-        'RTR',
-        'CML',
-        'CMA',
-        'CLL',
-        'CLA',
+        'P_NOP',
+        'P_IAC',
+        'P_RAL',
+        'P_RTL',
+        'P_RAR',
+        'P_RTR',
+        'P_CML',
+        'P_CMA',
+        'P_CLL',
+        'P_CLA',
 
-        # Group 2 Operate Microinstructions
-        'HLT',
-        'OSR',
-        'SKP',
-        'SNL',
-        'SZL',
-        'SZA',
-        'SNA',
-        'SMA',
-        'SPA',
+        # GrouP 2 Operate Microinstructions
+        'P_HLT',
+        'P_OSR',
+        'P_SKP',
+        'P_SNL',
+        'P_SZL',
+        'P_SZA',
+        'P_SNA',
+        'P_SMA',
+        'P_SPA',
 
         # Combined Operate Microinstructions
-        'CIA',
-        'STL',
-        'GLK',
-        'STA',
-        'LAS',
+        'P_CIA',
+        'P_STL',
+        'P_GLK',
+        'P_STA',
+        'P_LAS',
 
         # IOT Microinstructions
-        'ION',
-        'IOF',
-        'KSF',
-        'KCC',
-        'KRS',
-        'KRB',
-        'TSF',
-        'TCF',
-        'TPC',
-        'TLS',
-        'CLSK',
-        'CLLR',
-        'CLAB',
-        'CLEN',
-        'CLSA',
-        'CLBA',
-        'CLCA',
-        'CDF',
-        'CIF',
-        'RDF',
-        'RIF',
-        'RMF',
-        'RIB',
-        'LINC',
+        'P_ION',
+        'P_IOF',
+        'P_KSF',
+        'P_KCC',
+        'P_KRS',
+        'P_KRB',
+        'P_TSF',
+        'P_TCF',
+        'P_TPC',
+        'P_TLS',
+        'P_CLSK',
+        'P_CLLR',
+        'P_CLAB',
+        'P_CLEN',
+        'P_CLSA',
+        'P_CLBA',
+        'P_CLCA',
+        'P_CDF',
+        'P_CIF',
+        'P_RDF',
+        'P_RIF',
+        'P_RMF',
+        'P_RIB',
+        'P_LINC',
 
         ##########################
         # LINC Mode Instructions #
         ##########################
 
         # Reference page C-9 of "LAP6-DIAL Programmer's Reference Manual"
+        # Add
+        'L_ADD',
+        'L_ADA',
+        'L_ADM',
+        'L_LAM',
+
+        # Multiply
+        'L_MUL',
+
+        # Load
+        'L_LDA',
+        'L_LDH',
+
+        # Store
+        'L_STC',
+        'L_STA',
+        'L_STH',
+
+        # Shift/Rotate
+        'L_ROL',
+        'L_ROR',
+        'L_SCR',
+
+        # Operate
+        'L_HLT',
+        'L_NOP',
+        'L_CLR',
+        'L_SET',
+        'L_JMP',
+        'L_QAC',
+
+        # Logical Operations
+        'L_BCL',
+        'L_BSE',
+        'L_BCO',
+        'L_COM',
+
+        # Skip
+        'L_SAE',
+        'L_SHD',
+        'L_SNS',
+        'L_SKP',
+        'L_AZE',
+        'L_APO',
+        'L_LZE',
+        'L_FLO',
+        'L_QLZ',
+        'L_SXL',
+        'L_KST',
+        'L_SRO',
+        'L_XSK',
+        'L_STD',
+
+        # Input/Output
+        'L_ATR',
+        'L_RTA',
+        'L_SAM',
+        'L_DIS',
+        'L_DSC',
+        'L_PDP',
+        'L_RSW',
+        'L_LSW',
+        'L_IOB',
+
+        # Memory
+        'L_LIF',
+        'L_LDF',
+
+        # LINC Tape
+        'L_RDE',
+        'L_RDC',
+        'L_RCG',
+        'L_WRI',
+        'L_WRC',
+        'L_WCG',
+        'L_CHK',
+        'L_MTB',
+        'L_XOA',
+
+        # Extended Operations
+        'L_ESF',
+        'L_TAC',
+        'L_TMA',
+        'L_AXO',
+        'L_DJR',
+        'L_MSC',
+        'L_SFA',
     )
 
     t_ANY_PLUS = r'\+'
@@ -198,68 +285,68 @@ def lap6_lex():
     # Reference page C-7 of "LAP6-DIAL Programmer's Reference Manual"
 
     # Memory Reference Instructions
-    t_pmode_AND = r'\bAND\b'
-    t_pmode_TAD = r'\bTAD\b'
-    t_pmode_ISZ = r'\bISZ\b'
-    t_pmode_DCA = r'\bDCA\b'
-    t_pmode_JMS = r'\bJMS\b'
-    t_pmode_JMP = r'\bJMP\b'
+    t_pmode_P_AND = r'\bAND\b'
+    t_pmode_P_TAD = r'\bTAD\b'
+    t_pmode_P_ISZ = r'\bISZ\b'
+    t_pmode_P_DCA = r'\bDCA\b'
+    t_pmode_P_JMS = r'\bJMS\b'
+    t_pmode_P_JMP = r'\bJMP\b'
 
     # Group 1 Operate Microinstructions
-    t_pmode_NOP = r'\bNOP\b'
-    t_pmode_IAC = r'\bTAC\b'
-    t_pmode_RAL = r'\bRAL\b'
-    t_pmode_RTL = r'\bRTL\b'
-    t_pmode_RAR = r'\bRAR\b'
-    t_pmode_RTR = r'\bRTR\b'
-    t_pmode_CML = r'\bCML\b'
-    t_pmode_CMA = r'\bCMA\b'
-    t_pmode_CLL = r'\bCLL\b'
-    t_pmode_CLA = r'\bCLA\b'
+    t_pmode_P_NOP = r'\bNOP\b'
+    t_pmode_P_IAC = r'\bTAC\b'
+    t_pmode_P_RAL = r'\bRAL\b'
+    t_pmode_P_RTL = r'\bRTL\b'
+    t_pmode_P_RAR = r'\bRAR\b'
+    t_pmode_P_RTR = r'\bRTR\b'
+    t_pmode_P_CML = r'\bCML\b'
+    t_pmode_P_CMA = r'\bCMA\b'
+    t_pmode_P_CLL = r'\bCLL\b'
+    t_pmode_P_CLA = r'\bCLA\b'
 
     # Group 2 Operate Microinstructions
-    t_pmode_HLT = r'\bHLT\b'
-    t_pmode_OSR = r'\bOSR\b'
-    t_pmode_SKP = r'\bSKP\b'
-    t_pmode_SNL = r'\bSNL\b'
-    t_pmode_SZL = r'\bSZL\b'
-    t_pmode_SZA = r'\bSZA\b'
-    t_pmode_SNA = r'\bSNA\b'
-    t_pmode_SMA = r'\bSMA\b'
-    t_pmode_SPA = r'\bSPA\b'
+    t_pmode_P_HLT = r'\bHLT\b'
+    t_pmode_P_OSR = r'\bOSR\b'
+    t_pmode_P_SKP = r'\bSKP\b'
+    t_pmode_P_SNL = r'\bSNL\b'
+    t_pmode_P_SZL = r'\bSZL\b'
+    t_pmode_P_SZA = r'\bSZA\b'
+    t_pmode_P_SNA = r'\bSNA\b'
+    t_pmode_P_SMA = r'\bSMA\b'
+    t_pmode_P_SPA = r'\bSPA\b'
 
     # Combined Operate Microinstructions
-    t_pmode_CIA = r'\bCIA\b'
-    t_pmode_STL = r'\bSTL\b'
-    t_pmode_GLK = r'\bGLK\b'
-    t_pmode_STA = r'\bSTA\b'
-    t_pmode_LAS = r'\bLAS\b'
+    t_pmode_P_CIA = r'\bCIA\b'
+    t_pmode_P_STL = r'\bSTL\b'
+    t_pmode_P_GLK = r'\bGLK\b'
+    t_pmode_P_STA = r'\bSTA\b'
+    t_pmode_P_LAS = r'\bLAS\b'
 
     # IOT Microinstructions
-    t_pmode_ION = r'\bION\b'
-    t_pmode_IOF = r'\bIOF\b'
-    t_pmode_KSF = r'\bKSF\b'
-    t_pmode_KCC = r'\bKCC\b'
-    t_pmode_KRS = r'\bKRS\b'
-    t_pmode_KRB = r'\bKRB\b'
-    t_pmode_TSF = r'\bTSF\b'
-    t_pmode_TCF = r'\bTCF\b'
-    t_pmode_TPC = r'\bTPC\b'
-    t_pmode_TLS = r'\bTLS\b'
-    t_pmode_CLSK = r'\bCLSK\b'
-    t_pmode_CLLR = r'\bCLLR\b'
-    t_pmode_CLAB = r'\bCLAB\b'
-    t_pmode_CLEN = r'\bCLEN\b'
-    t_pmode_CLSA = r'\bCLSA\b'
-    t_pmode_CLBA = r'\bCLBA\b'
-    t_pmode_CLCA = r'\bCLCA\b'
-    t_pmode_CDF = r'\bCDF\b'
-    t_pmode_CIF = r'\bCIF\b'
-    t_pmode_RDF = r'\bRDF\b'
-    t_pmode_RIF = r'\bRIF\b'
-    t_pmode_RMF = r'\bRMF\b'
-    t_pmode_RIB = r'\bRIB\b'
-    t_pmode_LINC = r'\bLINC\b'
+    t_pmode_P_ION = r'\bION\b'
+    t_pmode_P_IOF = r'\bIOF\b'
+    t_pmode_P_KSF = r'\bKSF\b'
+    t_pmode_P_KCC = r'\bKCC\b'
+    t_pmode_P_KRS = r'\bKRS\b'
+    t_pmode_P_KRB = r'\bKRB\b'
+    t_pmode_P_TSF = r'\bTSF\b'
+    t_pmode_P_TCF = r'\bTCF\b'
+    t_pmode_P_TPC = r'\bTPC\b'
+    t_pmode_P_TLS = r'\bTLS\b'
+    t_pmode_P_CLSK = r'\bCLSK\b'
+    t_pmode_P_CLLR = r'\bCLLR\b'
+    t_pmode_P_CLAB = r'\bCLAB\b'
+    t_pmode_P_CLEN = r'\bCLEN\b'
+    t_pmode_P_CLSA = r'\bCLSA\b'
+    t_pmode_P_CLBA = r'\bCLBA\b'
+    t_pmode_P_CLCA = r'\bCLCA\b'
+    t_pmode_P_CDF = r'\bCDF\b'
+    t_pmode_P_CIF = r'\bCIF\b'
+    t_pmode_P_RDF = r'\bRDF\b'
+    t_pmode_P_RIF = r'\bRIF\b'
+    t_pmode_P_RMF = r'\bRMF\b'
+    t_pmode_P_RIB = r'\bRIB\b'
+    t_pmode_P_LINC = r'\bLINC\b'
 
     instance = lex.lex()
     instance.begin('pmode')
