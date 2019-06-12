@@ -17,6 +17,16 @@ def lap6_lex():
 
         'NUMBER',
         'SYMBOL',
+
+        'P_MEM',
+        'P_OP1',
+        'P_OP2',
+        'P_OPC',
+        'P_IOT',
+
+        'L_DIRECT',
+        'L_ALPHA',
+        'L_BETA',
     )
 
     t_PLUS = r'\+'
