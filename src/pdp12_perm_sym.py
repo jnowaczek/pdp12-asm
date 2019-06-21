@@ -6,7 +6,7 @@ pseudo_ops = [
     'decimal',
     'eject',
     'field',
-    'indirect',
+    'i',
     'list',
     'listape',
     'lmode',
@@ -18,7 +18,7 @@ pseudo_ops = [
     'savsym',
     'segmnt',
     'text',
-    'zero_page',
+    'z',
 ]
 
 pmode_instructions = {
@@ -28,68 +28,88 @@ pmode_instructions = {
 
     # Reference page C-7 of "LAP6-DIAL Programmer's Reference Manual"
     # Memory Reference Instructions
-    'and': 0o0000,
-    'tad': 0o1000,
-    'isz': 0o2000,
-    'dca': 0o3000,
-    'jms': 0o4000,
-    'jmp': 0o5000,
+    'and': {'opcode': 0o0000, 'class': 'P_MEMORY_REFERENCE'},
+    'tad': {'opcode': 0o1000, 'class': 'P_MEMORY_REFERENCE'},
+    'isz': {'opcode': 0o2000, 'class': 'P_MEMORY_REFERENCE'},
+    'dca': {'opcode': 0o3000, 'class': 'P_MEMORY_REFERENCE'},
+    'jms': {'opcode': 0o4000, 'class': 'P_MEMORY_REFERENCE'},
+    'jmp': {'opcode': 0o5000, 'class': 'P_MEMORY_REFERENCE'},
 
     # Group 1 Operate Microinstructions
-    'nop': 0o7000,
-    'iac': 0o7001,
-    'ral': 0o7004,
-    'rtl': 0o7006,
-    'rar': 0o7010,
-    'rtr': 0o7012,
-    'cml': 0o7020,
-    'cma': 0o7040,
-    'cll': 0o7100,
-    'cla': 0o7200,
+    # Added to 0o7000
+    'nop': {'opcode': 0o0000, 'class': 'P_OPERATE_1'},
+    'iac': {'opcode': 0o0001, 'class': 'P_OPERATE_1'},
+    'ral': {'opcode': 0o0004, 'class': 'P_OPERATE_1'},
+    'rtl': {'opcode': 0o0006, 'class': 'P_OPERATE_1'},
+    'rar': {'opcode': 0o0010, 'class': 'P_OPERATE_1'},
+    'rtr': {'opcode': 0o0012, 'class': 'P_OPERATE_1'},
+    'cml': {'opcode': 0o0020, 'class': 'P_OPERATE_1'},
+    'cma': {'opcode': 0o0040, 'class': 'P_OPERATE_1'},
+    'cll': {'opcode': 0o0100, 'class': 'P_OPERATE_1'},
 
     # Group 2 Operate Microinstructions
-    'hlt': 0o7402,
-    'osr': 0o7404,
-    'skp': 0o7410,
-    'snl': 0o7420,
-    'szl': 0o7430,
-    'sza': 0o7440,
-    'sna': 0o7450,
-    'sma': 0o7500,
-    'spa': 0o7510,
+    # Added to 0o7400
+    'hlt': {'opcode': 0o7402, 'class': 'P_OPERATE_2'},
+    'osr': {'opcode': 0o7404, 'class': 'P_OPERATE_2'},
+    'skp': {'opcode': 0o7410, 'class': 'P_OPERATE_2'},
+    'snl': {'opcode': 0o7420, 'class': 'P_OPERATE_2'},
+    'szl': {'opcode': 0o7430, 'class': 'P_OPERATE_2'},
+    'sza': {'opcode': 0o7440, 'class': 'P_OPERATE_2'},
+    'sna': {'opcode': 0o7450, 'class': 'P_OPERATE_2'},
+    'sma': {'opcode': 0o7500, 'class': 'P_OPERATE_2'},
+    'spa': {'opcode': 0o7510, 'class': 'P_OPERATE_2'},
+
+    # CLA Operate Microinstruction (valid in both Group 1 and 2)
+    'cla': {'opcode': 0o0200, 'class': 'P_OPERATE'},
 
     # Combined Operate Microinstructions
-    'cia': 0o7041,
-    'stl': 0o7120,
-    'glk': 0o7204,
-    'sta': 0o7240,
-    'las': 0o7604,
+    'cia': {'opcode': 0o7041, 'class': 'P_BASIC'},
+    'stl': {'opcode': 0o7120, 'class': 'P_BASIC'},
+    'glk': {'opcode': 0o7204, 'class': 'P_BASIC'},
+    'sta': {'opcode': 0o7240, 'class': 'P_BASIC'},
+    'las': {'opcode': 0o7604, 'class': 'P_BASIC'},
 
     # IOT Microinstructions
-    'ion': 0o6001,
-    'iof': 0o6002,
-    'ksf': 0o6031,
-    'kcc': 0o6032,
-    'krs': 0o6034,
-    'krb': 0o6036,
-    'tsf': 0o6041,
-    'tcf': 0o6042,
-    'tpc': 0o6044,
-    'tls': 0o6046,
-    'clsk': 0o6131,
-    'cllr': 0o6132,
-    'clab': 0o6133,
-    'clen': 0o6134,
-    'clsa': 0o6135,
-    'clba': 0o6136,
-    'clca': 0o6137,
-    'cdf': 0o6201,
-    'cif': 0o6202,
-    'rdf': 0o6204,
-    'rif': 0o6224,
-    'rmf': 0o6244,
-    'rib': 0o6234,
-    'linc': 0o6141,
+    'ion': {'opcode': 0o6001, 'class': 'P_IO_TRANSFER'},
+    'iof': {'opcode': 0o6002, 'class': 'P_IO_TRANSFER'},
+    'linc': {'opcode': 0o6141, 'class': 'P_IO_TRANSFER'},
+
+    # Extended Arithmetic Element KE12
+    'sca': {'opcode': 0o7441, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'nmi': {'opcode': 0o7411, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'scl': {'opcode': 0o7403, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'cam': {'opcode': 0o7612, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'mqa': {'opcode': 0o7501, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'mql': {'opcode': 0o7421, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'muy': {'opcode': 0o7405, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'dvi': {'opcode': 0o7407, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'shl': {'opcode': 0o7413, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'asr': {'opcode': 0o7415, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'lsr': {'opcode': 0o7417, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+
+    # Extended Memory
+    'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY_0o7'},
+    'cif': {'opcode': 0o6202, 'class': 'P_EXTENDED_MEMORY_0o7'},
+    'rdf': {'opcode': 0o6204, 'class': 'P_BASIC'},
+    'rif': {'opcode': 0o6224, 'class': 'P_BASIC'},
+    'rmf': {'opcode': 0o6244, 'class': 'P_BASIC'},
+    'rib': {'opcode': 0o6234, 'class': 'P_BASIC'},
+
+    'ksf': {'opcode': 0o6031, 'class': ''},
+    'kcc': {'opcode': 0o6032, 'class': ''},
+    'krs': {'opcode': 0o6034, 'class': ''},
+    'krb': {'opcode': 0o6036, 'class': ''},
+    'tsf': {'opcode': 0o6041, 'class': ''},
+    'tcf': {'opcode': 0o6042, 'class': ''},
+    'tpc': {'opcode': 0o6044, 'class': ''},
+    'tls': {'opcode': 0o6046, 'class': ''},
+    'clsk': {'opcode': 0o6131, 'class': ''},
+    'cllr': {'opcode': 0o6132, 'class': ''},
+    'clab': {'opcode': 0o6133, 'class': ''},
+    'clen': {'opcode': 0o6134, 'class': ''},
+    'clsa': {'opcode': 0o6135, 'class': ''},
+    'clba': {'opcode': 0o6136, 'class': ''},
+    'clca': {'opcode': 0o6137, 'class': ''},
 }
 
 lmode_instructions = {
@@ -119,8 +139,8 @@ lmode_instructions = {
 
     # Shift/Rotate
     'rol': {'opcode': 0o0240, 'class': 'L_ALPHA_I_0o17'},
-    'ror': {'opcode': 0o0300, 'class': 'I_ALPHA_I_0o17'},
-    'scr': {'opcode': 0o0340, 'class': 'I_ALPHA_I_0o17'},
+    'ror': {'opcode': 0o0300, 'class': 'L_ALPHA_I_0o17'},
+    'scr': {'opcode': 0o0340, 'class': 'L_ALPHA_I_0o17'},
 
     # Operate
     'hlt': {'opcode': 0o0000, 'class': 'L_BASIC'},
