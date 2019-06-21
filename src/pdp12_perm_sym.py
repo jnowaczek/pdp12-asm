@@ -49,18 +49,33 @@ pmode_instructions = {
 
     # Group 2 Operate Microinstructions
     # Added to 0o7400
-    'hlt': {'opcode': 0o7402, 'class': 'P_OPERATE_2'},
-    'osr': {'opcode': 0o7404, 'class': 'P_OPERATE_2'},
-    'skp': {'opcode': 0o7410, 'class': 'P_OPERATE_2'},
-    'snl': {'opcode': 0o7420, 'class': 'P_OPERATE_2'},
-    'szl': {'opcode': 0o7430, 'class': 'P_OPERATE_2'},
-    'sza': {'opcode': 0o7440, 'class': 'P_OPERATE_2'},
-    'sna': {'opcode': 0o7450, 'class': 'P_OPERATE_2'},
-    'sma': {'opcode': 0o7500, 'class': 'P_OPERATE_2'},
-    'spa': {'opcode': 0o7510, 'class': 'P_OPERATE_2'},
+    'hlt': {'opcode': 0o0002, 'class': 'P_OPERATE_2'},
+    'osr': {'opcode': 0o0004, 'class': 'P_OPERATE_2'},
+    'skp': {'opcode': 0o0010, 'class': 'P_OPERATE_2'},
+    'snl': {'opcode': 0o0020, 'class': 'P_OPERATE_2'},
+    'szl': {'opcode': 0o0030, 'class': 'P_OPERATE_2'},
+    'sza': {'opcode': 0o0040, 'class': 'P_OPERATE_2'},
+    'sna': {'opcode': 0o0050, 'class': 'P_OPERATE_2'},
+    'sma': {'opcode': 0o0100, 'class': 'P_OPERATE_2'},
+    'spa': {'opcode': 0o0110, 'class': 'P_OPERATE_2'},
 
-    # CLA Operate Microinstruction (valid in both Group 1 and 2)
-    'cla': {'opcode': 0o0200, 'class': 'P_OPERATE'},
+    # Extended Arithmetic Element KE12 Microinstructions
+    # Added to 0o7401
+    'sca': {'opcode': 0o0040, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'scl': {'opcode': 0o0002, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'cam': {'opcode': 0o0220, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'mqa': {'opcode': 0o0100, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'mql': {'opcode': 0o0020, 'class': 'P_EXTENDED_ARITHMETIC'},
+    'muy': {'opcode': 0o0004, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'dvi': {'opcode': 0o0006, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'shl': {'opcode': 0o0012, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'asr': {'opcode': 0o0014, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'lsr': {'opcode': 0o0016, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'nmi': {'opcode': 0o7411, 'class': 'P_BASIC'},  # Not microprogrammable
+
+    # CLA Operate Microinstruction
+    # Valid in Group 1, Group 2, or EAE
+    'cla': {'opcode': 0o0200, 'class': 'P_CLA'},
 
     # Combined Operate Microinstructions
     'cia': {'opcode': 0o7041, 'class': 'P_BASIC'},
@@ -70,22 +85,9 @@ pmode_instructions = {
     'las': {'opcode': 0o7604, 'class': 'P_BASIC'},
 
     # IOT Microinstructions
-    'ion': {'opcode': 0o6001, 'class': 'P_IO_TRANSFER'},
-    'iof': {'opcode': 0o6002, 'class': 'P_IO_TRANSFER'},
-    'linc': {'opcode': 0o6141, 'class': 'P_IO_TRANSFER'},
-
-    # Extended Arithmetic Element KE12
-    'sca': {'opcode': 0o7441, 'class': 'P_EXTENDED_ARITHMETIC'},
-    'nmi': {'opcode': 0o7411, 'class': 'P_EXTENDED_ARITHMETIC'},
-    'scl': {'opcode': 0o7403, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
-    'cam': {'opcode': 0o7612, 'class': 'P_EXTENDED_ARITHMETIC'},
-    'mqa': {'opcode': 0o7501, 'class': 'P_EXTENDED_ARITHMETIC'},
-    'mql': {'opcode': 0o7421, 'class': 'P_EXTENDED_ARITHMETIC'},
-    'muy': {'opcode': 0o7405, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
-    'dvi': {'opcode': 0o7407, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
-    'shl': {'opcode': 0o7413, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
-    'asr': {'opcode': 0o7415, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
-    'lsr': {'opcode': 0o7417, 'class': 'P_EXTENDED_ARITHMETIC_LONG'},
+    'ion': {'opcode': 0o6001, 'class': 'P_BASIC'},
+    'iof': {'opcode': 0o6002, 'class': 'P_BASIC'},
+    'linc': {'opcode': 0o6141, 'class': 'P_BASIC'},
 
     # Extended Memory
     'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY_0o7'},
@@ -95,21 +97,22 @@ pmode_instructions = {
     'rmf': {'opcode': 0o6244, 'class': 'P_BASIC'},
     'rib': {'opcode': 0o6234, 'class': 'P_BASIC'},
 
-    'ksf': {'opcode': 0o6031, 'class': ''},
-    'kcc': {'opcode': 0o6032, 'class': ''},
-    'krs': {'opcode': 0o6034, 'class': ''},
-    'krb': {'opcode': 0o6036, 'class': ''},
-    'tsf': {'opcode': 0o6041, 'class': ''},
-    'tcf': {'opcode': 0o6042, 'class': ''},
-    'tpc': {'opcode': 0o6044, 'class': ''},
-    'tls': {'opcode': 0o6046, 'class': ''},
-    'clsk': {'opcode': 0o6131, 'class': ''},
-    'cllr': {'opcode': 0o6132, 'class': ''},
-    'clab': {'opcode': 0o6133, 'class': ''},
-    'clen': {'opcode': 0o6134, 'class': ''},
-    'clsa': {'opcode': 0o6135, 'class': ''},
-    'clba': {'opcode': 0o6136, 'class': ''},
-    'clca': {'opcode': 0o6137, 'class': ''},
+    # Peripheral IOT Instructions
+    # 'ksf': {'opcode': 0o6031, 'class': ''},
+    # 'kcc': {'opcode': 0o6032, 'class': ''},
+    # 'krs': {'opcode': 0o6034, 'class': ''},
+    # 'krb': {'opcode': 0o6036, 'class': ''},
+    # 'tsf': {'opcode': 0o6041, 'class': ''},
+    # 'tcf': {'opcode': 0o6042, 'class': ''},
+    # 'tpc': {'opcode': 0o6044, 'class': ''},
+    # 'tls': {'opcode': 0o6046, 'class': ''},
+    # 'clsk': {'opcode': 0o6131, 'class': ''},
+    # 'cllr': {'opcode': 0o6132, 'class': ''},
+    # 'clab': {'opcode': 0o6133, 'class': ''},
+    # 'clen': {'opcode': 0o6134, 'class': ''},
+    # 'clsa': {'opcode': 0o6135, 'class': ''},
+    # 'clba': {'opcode': 0o6136, 'class': ''},
+    # 'clca': {'opcode': 0o6137, 'class': ''},
 }
 
 lmode_instructions = {
