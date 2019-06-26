@@ -44,12 +44,11 @@ def lap6_lex():
 
         'P_BASIC',
         'P_MEMORY_REFERENCE',
-        'P_OPERATE',
+        'P_CLA',
         'P_OPERATE_1',
         'P_OPERATE_2',
         'P_EXTENDED_ARITHMETIC',
         'P_EXTENDED_ARITHMETIC_LONG',
-        'P_IO_TRANSFER',
         'P_EXTENDED_MEMORY_0o7',
 
         'L_BASIC',

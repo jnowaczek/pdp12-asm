@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
-from lap6_lex import lap6_lex
 import pdp12_perm_sym
+from lap6_lex import lap6_lex
 
 tokens = list(lap6_lex().lextokens)
 
@@ -42,16 +42,109 @@ def p_lmode_class_basic(p):
 
 
 def p_lmode_class_direct(p):
+    # TODO: Check expression value and error case
     """machine_code : L_DIRECT expression"""
-    p[0] = symbol_lookup(p[1]) + p[2] & 0o7777
+    p[0] = symbol_lookup(p[1]) + p[2]
 
 
 def p_lmode_class_beta(p):
+    # TODO: Check expression value and error case
     """machine_code : L_BETA expression
-                    | L_BETA i expression"""
+                    | L_BETA I expression"""
+    p[0] = symbol_lookup(p[1]) + p[2]
+    if p[3]:
+        p[0] += p[3]
+
+
+def p_lmode_class_beta_dsc(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_BETA_DSC expression
+                    | L_BETA_DSC I expression"""
+    p[0] = symbol_lookup(p[1]) + p[2]
+    if p[3]:
+        p[0] += p[3]
+
+
+def p_lmode_class_alpha(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_ALPHA expression"""
     p[0] = p[1] + p[2]
+
+
+def p_lmode_class_alpha_0o17(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_ALPHA_0o17 expression"""
+    p[0] = symbol_lookup(p[1]) + symbol_lookup(p[2])
+
+
+def p_lmode_class_alpha_0o37(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_ALPHA_0o37 expression"""
+    p[0] = symbol_lookup(p[1]) + symbol_lookup(p[2])
+
+
+def p_lmode_class_alpha_i(p):
+    """machine_code : L_ALPHA_I I
+                    | L_ALPHA_I"""
+    p[0] = symbol_lookup(p[1])
     if p[2]:
-        p[0] += p[2]
+        p[0] += symbol_lookup(p[2])
+
+
+def p_lmode_class_alpha_i_0o5(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_ALPHA_I_0o5 I expression
+                    | L_ALPHA_I_0o5 expression"""
+    p[0] = symbol_lookup(p[1]) + symbol_lookup(p[2])
+    if p[3]:
+        p[0] += symbol_lookup(p[3])
+
+
+def p_lmode_class_alpha_i_0o17(p):
+    # TODO: Check expression value and error case
+    """machine_code : L_ALPHA_I_0o17 I expression
+                    | L_ALPHA_I_0o17 expression"""
+    p[0] = symbol_lookup(p[1]) + symbol_lookup(p[2])
+    if p[3]:
+        p[0] += symbol_lookup(p[3])
+
+
+# def p_lmode_class_iob(p):
+#     # TODO: Figure out how to handle 2 word instructions
+#     """machine_code : L_IOB"""
+#     p[0] = symbol_lookup(p[1]) + symbol_lookup(p[2])
+#     if p[3]:
+#         p[0] += symbol_lookup(p[3])
+
+
+def p_lmode_class_tape(p):
+    # TODO: Check unit value and error case
+    """machine_code : L_TAPE I expression
+                    | L_TAPE expression"""
+    if p[3]:
+        p[0] += symbol_lookup(p[1]) + symbol_lookup(p[2]) + (p[3] & 0o0001)
+    else:
+        p[0] = symbol_lookup(p[1]) + (p[2] & 0o0001)
+
+
+def p_pseudo_decimal(p):
+    """empty : DECIMAL"""
+    radix = 'decimal'
+
+
+def p_pseudo_octal(p):
+    """empty : OCTAL"""
+    radix = 'octal'
+
+
+def p_pseudo_lmode(p):
+    """empty : LMODE"""
+    mode = 'lmode'
+
+
+def p_pseudo_pmode(p):
+    """empty : PMODE"""
+    mode = 'pmode'
 
 
 def p_expression_plus(p):
