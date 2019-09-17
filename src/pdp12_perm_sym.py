@@ -1,25 +1,24 @@
-pseudo_ops = [
-    'asmifz',
-    'asmifn',
-    'asmifm',
-    'asmskp',
-    'decimal',
-    'eject',
-    'field',
-    'i',
-    'list',
-    'listape',
-    'lmode',
-    'lodsym',
-    'nolist',
-    'octal',
-    'page',
-    'pmode',
-    'savsym',
-    'segmnt',
-    'text',
-    'z',
-]
+pseudo_ops = {
+    'asmifz': {},
+    'asmifn': {},
+    'asmifm': {},
+    'asmskp': {},
+    'decimal': {},
+    'eject': {},
+    'field': {},
+    'list': {},
+    'listape': {},
+    'lodsym': {},
+    'nolist': {},
+    'octal': {},
+    'page': {},
+    'savsym': {},
+    'segmnt': {},
+    'text': {},
+}
+
+pmode_pseudo_ops = {'lmode': {}, 'i': {}, 'z': {}}
+lmode_pseudo_ops = {'pmode': {}}
 
 pmode_instructions = {
     ###########################
@@ -90,8 +89,8 @@ pmode_instructions = {
     'linc': {'opcode': 0o6141, 'class': 'P_BASIC'},
 
     # Extended Memory
-    'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY_0o7'},
-    'cif': {'opcode': 0o6202, 'class': 'P_EXTENDED_MEMORY_0o7'},
+    'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY'},
+    'cif': {'opcode': 0o6202, 'class': 'P_EXTENDED_MEMORY'},
     'rdf': {'opcode': 0o6204, 'class': 'P_BASIC'},
     'rif': {'opcode': 0o6224, 'class': 'P_BASIC'},
     'rmf': {'opcode': 0o6244, 'class': 'P_BASIC'},
@@ -141,9 +140,9 @@ lmode_instructions = {
     'sth': {'opcode': 0o1340, 'class': 'L_BETA'},
 
     # Shift/Rotate
-    'rol': {'opcode': 0o0240, 'class': 'L_ALPHA_I_0o17'},
-    'ror': {'opcode': 0o0300, 'class': 'L_ALPHA_I_0o17'},
-    'scr': {'opcode': 0o0340, 'class': 'L_ALPHA_I_0o17'},
+    'rol': {'opcode': 0o0240, 'class': 'L_ALPHA'},
+    'ror': {'opcode': 0o0300, 'class': 'L_ALPHA'},
+    'scr': {'opcode': 0o0340, 'class': 'L_ALPHA'},
 
     # Operate
     'hlt': {'opcode': 0o0000, 'class': 'L_BASIC'},
@@ -165,35 +164,35 @@ lmode_instructions = {
     # Skip
     'sae': {'opcode': 0o1440, 'class': 'L_BETA'},
     'shd': {'opcode': 0o1400, 'class': 'L_BETA'},
-    'sns': {'opcode': 0o0440, 'class': 'L_ALPHA_I_0o5'},
-    'skp': {'opcode': 0o0456, 'class': 'L_ALPHA_I'},
-    'aze': {'opcode': 0o0450, 'class': 'L_ALPHA_I'},
-    'apo': {'opcode': 0o0451, 'class': 'L_ALPHA_I'},
-    'lze': {'opcode': 0o0452, 'class': 'L_ALPHA_I'},
-    'flo': {'opcode': 0o0454, 'class': 'L_ALPHA_I'},
-    'qlz': {'opcode': 0o0455, 'class': 'L_ALPHA_I'},
-    'sxl': {'opcode': 0o0400, 'class': 'L_ALPHA_I_0o17'},
-    'kst': {'opcode': 0o0415, 'class': 'L_ALPHA_I'},
+    'sns': {'opcode': 0o0440, 'class': 'L_ALPHA'},
+    'skp': {'opcode': 0o0456, 'class': 'L_ALPHA'},
+    'aze': {'opcode': 0o0450, 'class': 'L_ALPHA'},
+    'apo': {'opcode': 0o0451, 'class': 'L_ALPHA'},
+    'lze': {'opcode': 0o0452, 'class': 'L_ALPHA'},
+    'flo': {'opcode': 0o0454, 'class': 'L_ALPHA'},
+    'qlz': {'opcode': 0o0455, 'class': 'L_ALPHA'},
+    'sxl': {'opcode': 0o0400, 'class': 'L_ALPHA'},
+    'kst': {'opcode': 0o0415, 'class': 'L_ALPHA'},
     'sro': {'opcode': 0o1500, 'class': 'L_BETA'},
-    'xsk': {'opcode': 0o0200, 'class': 'L_ALPHA_I_0o17'},
-    'std': {'opcode': 0o0416, 'class': 'L_ALPHA_I'},
+    'xsk': {'opcode': 0o0200, 'class': 'L_ALPHA'},
+    'std': {'opcode': 0o0416, 'class': 'L_ALPHA'},
 
     # Input/Output
     'atr': {'opcode': 0o0014, 'class': 'L_BASIC'},
     'rta': {'opcode': 0o0015, 'class': 'L_BASIC'},
-    'sam': {'opcode': 0o0100, 'class': 'L_ALPHA_0o17'},
-    'dis': {'opcode': 0o0140, 'class': 'L_ALPHA_I_0o17'},
-    'dsc': {'opcode': 0o1740, 'class': 'L_BETA_DSC'},
+    'sam': {'opcode': 0o0100, 'class': 'L_ALPHA'},
+    'dis': {'opcode': 0o0140, 'class': 'L_ALPHA'},
+    'dsc': {'opcode': 0o1740, 'class': 'L_BETA'},
     'rsw': {'opcode': 0o0516, 'class': 'L_BASIC'},
     'lsw': {'opcode': 0o0517, 'class': 'L_BASIC'},
-    'iob': {'opcode': 0o0500, 'class': 'L_BASIC'},
     'pdp': {'opcode': 0o0002, 'class': 'L_BASIC'},
 
     # Memory
-    'lif': {'opcode': 0o0600, 'class': 'L_ALPHA_0o37'},
-    'ldf': {'opcode': 0o0640, 'class': 'L_ALPHA_0o37'},
+    'lif': {'opcode': 0o0600, 'class': 'L_ALPHA'},
+    'ldf': {'opcode': 0o0640, 'class': 'L_ALPHA'},
 
     # IOB
+    # 'iob': {'opcode': 0o0500, 'class': 'L_BASIC'},
     'rif': {'opcode': 0o6224, 'class': 'L_IOB'},
     'rdf': {'opcode': 0o6214, 'class': 'L_IOB'},
     'rib': {'opcode': 0o6234, 'class': 'L_IOB'},
@@ -214,3 +213,7 @@ lmode_instructions = {
     'tma': {'opcode': 0o0023, 'class': 'L_BASIC'},
     'msc': {'opcode': 0o0000, 'class': 'L_BASIC'},
 }
+
+all_perm_sym = {**lmode_pseudo_ops, **pmode_pseudo_ops, **lmode_instructions, **pmode_instructions}
+all_instructions = {**lmode_instructions, **pmode_instructions}
+all_pseudo_op = {**pseudo_ops, **lmode_pseudo_ops, **pmode_pseudo_ops}
