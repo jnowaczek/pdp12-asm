@@ -26,29 +26,16 @@ def symbol_lookup(name):
 
 def p_program(p):
     """program : empty
+               | program empty
                | program machine_code"""
-
-
-def p_machine_code(p):
-    """machine_code : INSTRUCTION"""
-    p[0] = symbol_lookup(p[1]) if p[1] else None
-
-
-def p_set_origin(p):
-    """empty : ASTERISK NUMBER"""
-    global mem_origin
-    mem_origin = int(p[2], base=radix)
-    p[0] = None
-
-
-def p_assignment(p):
-    """empty : SYMBOL COMMA
-             | SYMBOL EQUALS expression"""
-    if p[1] not in user_symbols:
-        if p[2] == ',':
-            user_symbols.update({p[1]: mem_origin + p.lineno(1)})
-        elif p[2] == '=':
-            user_symbols.update({p[1]: p[3]})
+    if len(p) == 3:
+        if p[2] is None:
+            p[0] = p[1]
+        else:
+            p[1].append(p[2])
+            p[0] = p[1]
+    if len(p) == 2:
+        p[0] = []
 
 
 def p_pseudo_op(p):
@@ -70,6 +57,50 @@ def p_pseudo_no_args(p):
     elif p[1] == 'PMODE':
         mode = 'pmode'
     p[0] = None
+
+
+def p_machine_code(p):
+    """machine_code : INSTRUCTION
+                    | I INSTRUCTION
+                    | INSTRUCTION NUMBER
+                    | INSTRUCTION I NUMBER"""
+    if mode == 'pmode':
+        if len(p) == 2:
+            p[0] = symbol_lookup(p[1])
+        elif len(p) == 3:
+            if p[1] == 'i':
+                p[0] = symbol_lookup(p[2]) + 0o400
+            else:
+                p[0] = symbol_lookup(p[1]) + int(p[2], radix)
+        elif len(p) == 4:
+            p[0] = symbol_lookup(p[1]) + 0o400 + int(p[3], radix)
+    elif mode == 'lmode':
+        if len(p) == 2:
+            p[0] = symbol_lookup(p[1])
+        elif len(p) == 3:
+            if p[1] == 'i':
+                p[0] = symbol_lookup(p[2]) + 0o20
+            else:
+                p[0] = symbol_lookup(p[1]) + int(p[2], radix)
+        elif len(p) == 4:
+            p[0] = symbol_lookup(p[1]) + 0o20 + int(p[3], radix)
+
+
+def p_set_origin(p):
+    """empty : ASTERISK NUMBER"""
+    global mem_origin
+    mem_origin = int(p[2], base=radix)
+    p[0] = None
+
+
+def p_assignment(p):
+    """empty : SYMBOL COMMA
+             | SYMBOL EQUALS expression"""
+    if p[1] not in user_symbols:
+        if p[2] == ',':
+            user_symbols.update({p[1]: mem_origin + p.lineno(1)})
+        elif p[2] == '=':
+            user_symbols.update({p[1]: p[3]})
 
 
 def p_expression_plus(p):
@@ -140,7 +171,7 @@ if __name__ == '__main__':
     while True:
         try:
             s = input('pdp12-asm > ')
-            result = parser.parse('PMODE\nnmi', debug=True)
+            result = parser.parse('PMODE\n AND I 300', debug=True)
             print(result)
         except EOFError:
             print('Memory Origin: 0o%04o' % mem_origin)
