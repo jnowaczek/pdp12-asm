@@ -78,7 +78,6 @@ def lap6_lex():
         t.lexer.skip(1)
 
     instance = lex.lex()
-    instance.lineno = 0  # Begin at line number zero
     return instance
 
 

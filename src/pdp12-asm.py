@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
         user_symbols = {}
 
-        for token in lexer: # First pass
+        for token in lexer:  # First pass
             if token.type == 'SYMBOL':
                 if token.value.lower() not in pdp12_perm_sym.all_perm_sym:
                     if token.value.lower() not in user_symbols:
