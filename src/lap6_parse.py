@@ -61,29 +61,34 @@ def p_pseudo_no_args(p):
 
 def p_machine_code(p):
     """machine_code : INSTRUCTION
-                    | I INSTRUCTION
-                    | INSTRUCTION NUMBER
-                    | INSTRUCTION I NUMBER"""
+                    | INSTRUCTION I
+                    | INSTRUCTION expression
+                    | INSTRUCTION I expression"""
     if mode == 'pmode':
         if len(p) == 2:
             p[0] = symbol_lookup(p[1])
         elif len(p) == 3:
-            if p[1] == 'i':
+            if p[1] == 'i' or p[2] == 'I':
                 p[0] = symbol_lookup(p[2]) + 0o400
             else:
-                p[0] = symbol_lookup(p[1]) + int(p[2], radix)
+                p[0] = symbol_lookup(p[1]) + p[2]
         elif len(p) == 4:
-            p[0] = symbol_lookup(p[1]) + 0o400 + int(p[3], radix)
+            p[0] = symbol_lookup(p[1]) + 0o400 + p[3]
     elif mode == 'lmode':
         if len(p) == 2:
             p[0] = symbol_lookup(p[1])
         elif len(p) == 3:
-            if p[1] == 'i':
-                p[0] = symbol_lookup(p[2]) + 0o20
+            if p[2] == 'i' or p[2] == 'I':
+                p[0] = symbol_lookup(p[1]) + 0o20
             else:
-                p[0] = symbol_lookup(p[1]) + int(p[2], radix)
+                p[0] = symbol_lookup(p[1]) + p[2]
         elif len(p) == 4:
-            p[0] = symbol_lookup(p[1]) + 0o20 + int(p[3], radix)
+            p[0] = symbol_lookup(p[1]) + 0o20 + p[3]
+
+
+def p_expression_literal(p):
+    """machine_code : expression"""
+    p[0] = p[1]
 
 
 def p_set_origin(p):
@@ -130,11 +135,6 @@ def p_expression_or(p):
     p[0] = p[1] | p[3]
 
 
-def p_expression_or_symbol(p):
-    """expression : term term"""
-    p[0] = p[1] | p[2]
-
-
 def p_expression_term(p):
     """expression : term"""
     p[0] = p[1]
@@ -158,24 +158,32 @@ def parse(line):
     l.input(line)
     tokens = list(l.lextokens)
     p = yacc.yacc()
-    return p.parse(line, debug=False)
+    result = []
+    for instruction in p.parse(line, debug=False):
+        result.append('{:0>4o}'.format(instruction))
+    return result
 
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    # with open('../test/FRQANA') as listing:
-    #     lexer.input(listing.read())
+    with open('../test/KALEIDOSCOPE') as listing:
+        lexer.input(listing.read())
     tokens = list(lexer.lextokens)
     parser = yacc.yacc()
+    result = parser.parse(debug=True)
 
-    while True:
-        try:
-            s = input('pdp12-asm > ')
-            result = parser.parse('PMODE\n AND I 300', debug=True)
-            print(result)
-        except EOFError:
-            print('Memory Origin: 0o%04o' % mem_origin)
-            print('User Symbols: %s' % user_symbols)
-            break
-        if not s:
-            continue
+    for index, instr in enumerate(result):
+        print('0o{:0>4o}\t{:0>4o}'.format(mem_origin + index, instr))
+    print('User Symbols: {}'.format(user_symbols))
+
+    # while True:
+    #     try:
+    #         s = input('pdp12-asm > ')
+    #         result = parser.parse('PMODE\n AND I 300', debug=True)
+    #         print(result)
+    #     except EOFError:
+    #         print('Memory Origin: 0o%04o' % mem_origin)
+    #         print('User Symbols: %s' % user_symbols)
+    #         break
+    #     if not s:
+    #         continue
