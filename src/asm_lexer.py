@@ -4,6 +4,8 @@ import pdp12_perm_sym
 
 
 def lap6_lex():
+    mode = 'lmode'
+
     tokens = (
         'COMMA',
         'ASTERISK',
@@ -67,13 +69,17 @@ def lap6_lex():
         r"""[a-zA-Z][a-zA-Z0-9]*"""
         if t.value.lower() in pdp12_perm_sym.all_instructions:
             # Not-so-pretty separation of "microcoded" instruction classes for special handling
-            if pdp12_perm_sym.all_instructions[t.value.lower()]['class'] in ['P_OPERATE_1', 'P_OPERATE_2',
-                                                                             'P_EXTENDED_ARITHMETIC',
-                                                                             'P_EXTENDED_ARITHMETIC_LONG', 'P_CLA']:
+            nonlocal mode
+            t.type = 'INSTRUCTION'
+            if mode == 'pmode' and pdp12_perm_sym.all_instructions[t.value.lower()]['class'] in ['P_OPERATE_1',
+                                                                                                 'P_OPERATE_2',
+                                                                                                 'P_EXTENDED_ARITHMETIC',
+                                                                                                 'P_EXTENDED_ARITHMETIC_LONG',
+                                                                                                 'P_CLA']:
                 t.type = pdp12_perm_sym.all_instructions[t.value.lower()]['class']
-            else:
-                t.type = 'INSTRUCTION'
         elif t.value.lower() in pdp12_perm_sym.all_pseudo_op:
+            if t.value.lower() == 'pmode' or t.value.lower() == 'lmode':
+                mode = t.value.lower()
             t.type = t.value.upper()
         return t
 

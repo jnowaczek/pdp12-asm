@@ -18,6 +18,7 @@ precedence = (
 
 
 def symbol_lookup(name):
+    global mode
     lower_name = name.lower()
     if name == '.':
         return mem_origin + current_location_count
@@ -205,7 +206,7 @@ def parse(file):
     tokens = list(l.lextokens)
     output = []
     p = yacc.yacc()
-    mc = p.parse(file, debug=False)
+    mc = p.parse(file, debug=True)
     if additional_pass:
         reset_parser()
         return parse(file)
@@ -228,7 +229,6 @@ if __name__ == '__main__':
     with open('../test/RIMLOADER') as file:
         listing = file.read()
         lexer.input(listing)
-        tokens = list(lexer.lextokens)
         output = parse(listing)
         print(output)
         print('User Symbols: {}'.format(user_symbols))
