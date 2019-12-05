@@ -27,12 +27,12 @@ pmode_instructions = {
 
     # Reference page C-7 of "LAP6-DIAL Programmer's Reference Manual"
     # Memory Reference Instructions
-    'and': {'opcode': 0o0000, 'class': 'P_MEMORY_REFERENCE'},
-    'tad': {'opcode': 0o1000, 'class': 'P_MEMORY_REFERENCE'},
-    'isz': {'opcode': 0o2000, 'class': 'P_MEMORY_REFERENCE'},
-    'dca': {'opcode': 0o3000, 'class': 'P_MEMORY_REFERENCE'},
-    'jms': {'opcode': 0o4000, 'class': 'P_MEMORY_REFERENCE'},
-    'jmp': {'opcode': 0o5000, 'class': 'P_MEMORY_REFERENCE'},
+    'and': {'opcode': 0o0000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
+    'tad': {'opcode': 0o1000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
+    'isz': {'opcode': 0o2000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
+    'dca': {'opcode': 0o3000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
+    'jms': {'opcode': 0o4000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
+    'jmp': {'opcode': 0o5000, 'class': 'P_MEMORY_REFERENCE', 'mask': 0o0377},
 
     # Group 1 Operate Microinstructions
     # Added to 0o7000
@@ -89,8 +89,8 @@ pmode_instructions = {
     'linc': {'opcode': 0o6141, 'class': 'P_BASIC'},
 
     # Extended Memory
-    'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY'},
-    'cif': {'opcode': 0o6202, 'class': 'P_EXTENDED_MEMORY'},
+    'cdf': {'opcode': 0o6201, 'class': 'P_EXTENDED_MEMORY', 'mask': 0o0076},
+    'cif': {'opcode': 0o6202, 'class': 'P_EXTENDED_MEMORY', 'mask': 0o0076},
     'rdf': {'opcode': 0o6204, 'class': 'P_BASIC'},
     'rif': {'opcode': 0o6224, 'class': 'P_BASIC'},
     'rmf': {'opcode': 0o6244, 'class': 'P_BASIC'},

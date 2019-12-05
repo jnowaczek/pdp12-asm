@@ -1,5 +1,5 @@
 import argparse
-from lap6_lex import lap6_lex
+from asm_lexer import lap6_lex
 import pdp12_perm_sym
 
 if __name__ == '__main__':

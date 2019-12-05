@@ -7,7 +7,7 @@ def lap6_lex():
     tokens = (
         'COMMA',
         'ASTERISK',
-        'SEMICOLON',
+        'STATEMENT_END',
         'EQUALS',
         'PLUS',
         'MINUS',
@@ -20,6 +20,11 @@ def lap6_lex():
         'NUMBER',
         'SYMBOL',
         'INSTRUCTION',
+        'P_OPERATE_1',
+        'P_OPERATE_2',
+        'P_EXTENDED_ARITHMETIC',
+        'P_EXTENDED_ARITHMETIC_LONG',
+        'P_CLA',
 
         'ASMIFZ',
         'ASMIFN',
@@ -48,7 +53,6 @@ def lap6_lex():
     t_EXCLAMATION = r'\!'
     t_COMMA = r'\,'
     t_EQUALS = r'\='
-    t_SEMICOLON = r'\;'
     t_ASTERISK = r'\*'
     t_DOT = r'\.'
 
@@ -62,14 +66,27 @@ def lap6_lex():
     def t_SYMBOL(t):
         r"""[a-zA-Z][a-zA-Z0-9]*"""
         if t.value.lower() in pdp12_perm_sym.all_instructions:
-            t.type = 'INSTRUCTION'
+            # Not-so-pretty separation of "microcoded" instruction classes for special handling
+            if pdp12_perm_sym.all_instructions[t.value.lower()]['class'] in ['P_OPERATE_1', 'P_OPERATE_2',
+                                                                             'P_EXTENDED_ARITHMETIC',
+                                                                             'P_EXTENDED_ARITHMETIC_LONG', 'P_CLA']:
+                t.type = pdp12_perm_sym.all_instructions[t.value.lower()]['class']
+            else:
+                t.type = 'INSTRUCTION'
         elif t.value.lower() in pdp12_perm_sym.all_pseudo_op:
             t.type = t.value.upper()
         return t
 
-    def t_NEWLINE(t):
+    def t_semicolon(t):
+        r""";"""
+        t.type = 'STATEMENT_END'
+        return t
+
+    def t_newline(t):
         r"""\n|\r|\r\n|\f"""
         t.lexer.lineno += 1
+        t.type = 'STATEMENT_END'
+        return t
 
     t_ignore = ' \t;'
 
@@ -83,7 +100,7 @@ def lap6_lex():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('../test/FRQANA') as listing:
+    with open('../test/RIMLOADER') as listing:
         lexer.input(listing.read())
 
     for token in lexer:

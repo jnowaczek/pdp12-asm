@@ -1,6 +1,6 @@
 import unittest
 
-import lap6_parse
+import asm_parse
 import pdp12_perm_sym
 
 
@@ -10,20 +10,20 @@ class BasicClassTests(unittest.TestCase):
                                   pdp12_perm_sym.pmode_instructions):
             test_string = 'PMODE\n' + instruction
             expected = pdp12_perm_sym.pmode_instructions[instruction]['opcode']
-            self.assertEqual([expected], lap6_parse.parse(test_string))
+            self.assertEqual([expected], asm_parse.parse(test_string))
 
     def test_with_label(self):
         for instruction in filter(lambda i: pdp12_perm_sym.pmode_instructions[i]['class'] == 'P_BASIC',
                                   pdp12_perm_sym.pmode_instructions):
             test_string = 'PMODE\n' + 'TEST, ' + instruction
             expected = pdp12_perm_sym.pmode_instructions[instruction]['opcode']
-            self.assertEqual([expected], lap6_parse.parse(test_string))
+            self.assertEqual([expected], asm_parse.parse(test_string))
 
 
 class FileTests(unittest.TestCase):
     def test_kalleidoscope(self):
         with open('./KALEIDOSCOPE') as listing:
-            result = lap6_parse.parse(listing.read())
+            result = asm_parse.parse(listing.read())
 
         expected = []
         with open('./KALEIDOSCOPE.output') as assembly:
