@@ -1,4 +1,6 @@
 # PDP12-ASM
+![Inside the PDP12](https://i.ibb.co/VLcn1dM/20190524-132442.jpg)
+
 
 This is a project...
 
