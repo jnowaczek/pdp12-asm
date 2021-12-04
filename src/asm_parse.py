@@ -9,7 +9,7 @@ mode = 'lmode'
 radix = 8
 mem_origin = 0o4020
 
-current_location_count = 0
+current_location = 0
 user_symbols = {}
 additional_pass = False
 
@@ -21,7 +21,7 @@ def symbol_lookup(name):
     global mode
     lower_name = name.lower()
     if name == '.':
-        return mem_origin + current_location_count
+        return current_location
     if mode == 'lmode':
         if lower_name in pdp12_perm_sym.lmode_instructions:
             return pdp12_perm_sym.lmode_instructions[lower_name]
@@ -44,24 +44,34 @@ def p_program(p):
         if p[2] is None:
             p[0] = p[1]
         else:
-            global current_location_count, mem_origin
-            p[1].append((current_location_count + mem_origin, p[2]))
+            global current_location
+            p[1].append((current_location, p[2]))
             p[0] = p[1]
-            current_location_count += 1
+            current_location += 1
     if len(p) == 2:
         p[0] = []
 
 
 def p_pseudo_op(p):
-    """empty : pseudo_no_args STATEMENT_END"""
+    """empty : pseudo_no_args STATEMENT_END
+             | pseudo_with_args STATEMENT_END"""
 
+
+def p_pseudo_with_args(p):
+    """pseudo_with_args : SEGMNT expression"""
+    global current_location
+    if p[1] == 'SEGMNT':
+        if 0 > p[2] < 7:
+            current_location = 0o2000 * p[2]
+        else:
+            raise SyntaxError
 
 def p_pseudo_no_args(p):
     """pseudo_no_args : OCTAL
                       | DECIMAL
                       | PMODE
                       | LMODE"""
-    global radix, mode
+    global radix, mode, current_location
     if p[1] == 'OCTAL':
         radix = 8
     elif p[1] == 'DECIMAL':
@@ -70,6 +80,8 @@ def p_pseudo_no_args(p):
         mode = 'lmode'
     elif p[1] == 'PMODE':
         mode = 'pmode'
+    elif p[1] == 'SEGMNT':
+        current_location = (current_location + 0o1777) & 0o6000
     p[0] = None
 
 
@@ -134,18 +146,18 @@ def p_expression_literal(p):
 
 def p_set_origin(p):
     """empty : ASTERISK NUMBER STATEMENT_END"""
-    global mem_origin, current_location_count
-    mem_origin = int(p[2], base=radix)
-    current_location_count = 0
+    global current_location
+    current_location = int(p[2], base=radix)
     p[0] = None
 
 
 def p_assignment(p):
     """empty : SYMBOL COMMA
              | SYMBOL EQUALS expression"""
+    global current_location
     if p[1] not in user_symbols:
         if p[2] == ',':
-            user_symbols.update({p[1]: mem_origin + current_location_count})
+            user_symbols.update({p[1]: current_location})
         elif p[2] == '=':
             user_symbols.update({p[1]: p[3]})
 
@@ -193,7 +205,7 @@ def p_term(p):
     """term : NUMBER
             | DOT"""
     if p[1] == '.':
-        p[0] = mem_origin + current_location_count
+        p[0] = current_location
     else:
         p[0] = int(p[1], radix)
 
@@ -222,17 +234,17 @@ def parse(file):
     if additional_pass:
         reset_parser()
         return parse(file)
-    for instruction in mc:
-        output.append('{:0>4o} {:0>4o}'.format(instruction[0], instruction[1]))
+    if mc is not None:
+        for instruction in mc:
+            output.append('{:0>4o} {:0>4o}'.format(instruction[0], instruction[1]))
     return output
 
 
 def reset_parser():
-    global mode, radix, mem_origin, current_location_count, additional_pass
+    global mode, radix, current_location, additional_pass
     mode = 'lmode'
     radix = 8
-    mem_origin = 0o4020
-    current_location_count = 0
+    current_location = 0o4020
     additional_pass = False
 
 
