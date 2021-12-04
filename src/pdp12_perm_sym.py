@@ -1,3 +1,5 @@
+import json
+
 pseudo_ops = {
     'asmifz': {},
     'asmifn': {},
@@ -217,3 +219,6 @@ lmode_instructions = {
 all_perm_sym = {**lmode_pseudo_ops, **pmode_pseudo_ops, **lmode_instructions, **pmode_instructions}
 all_instructions = {**lmode_instructions, **pmode_instructions}
 all_pseudo_op = {**pseudo_ops, **lmode_pseudo_ops, **pmode_pseudo_ops}
+
+if __name__ == '__main__':
+    print(json.dumps(all_instructions))

@@ -1,6 +1,12 @@
 import argparse
-from asm_lexer import lap6_lex
+
 import pdp12_perm_sym
+from asm_lexer import lap6_lex
+
+
+def rim_format(assembly):
+    return NotImplementedError()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PDP-12 LAP6-DIAL Assembler')

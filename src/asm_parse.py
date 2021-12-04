@@ -44,9 +44,9 @@ def p_program(p):
         if p[2] is None:
             p[0] = p[1]
         else:
-            p[1].append(p[2])
+            global current_location_count, mem_origin
+            p[1].append((current_location_count + mem_origin, p[2]))
             p[0] = p[1]
-            global current_location_count
             current_location_count += 1
     if len(p) == 2:
         p[0] = []
@@ -159,12 +159,19 @@ def p_expression_plus(p):
 
 
 def p_expression_minus(p):
-    """expression : expression MINUS term"""
+    """expression : expression MINUS term
+                  | MINUS expression"""
     # Refer to page 3-5 in "LAP6-DIAL Programmer's Reference Manual"
     if mode == 'lmode':  # One's Complement
-        p[0] = (p[1] - p[3]) & 0o1777 - 1
+        if len(p) == 3:
+            p[0] = 0 - p[2] & 0o1777 - 1
+        else:
+            p[0] = (p[1] - p[3]) & 0o1777 - 1
     if mode == 'pmode':  # Two's Complement
-        p[0] = (p[1] - p[3]) & 0o7777
+        if len(p) == 3:
+            p[0] = 0 - p[2] & 0o7777
+        else:
+            p[0] = (p[1] - p[3]) & 0o7777
 
 
 def p_expression_and(p):
@@ -190,9 +197,14 @@ def p_term(p):
     else:
         p[0] = int(p[1], radix)
 
+
 def p_term_symbol(p):
     """term : SYMBOL"""
     p[0] = symbol_lookup(p[1])
+
+
+def p_blank_lines(p):
+    """empty : STATEMENT_END"""
 
 
 def p_error(p):
@@ -206,12 +218,12 @@ def parse(file):
     tokens = list(l.lextokens)
     output = []
     p = yacc.yacc()
-    mc = p.parse(file, debug=True)
+    mc = p.parse(file)
     if additional_pass:
         reset_parser()
         return parse(file)
     for instruction in mc:
-        output.append('{:0>4o}'.format(instruction))
+        output.append('{:0>4o} {:0>4o}'.format(instruction[0], instruction[1]))
     return output
 
 
@@ -226,7 +238,7 @@ def reset_parser():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('../test/RIMLOADER') as file:
+    with open('../test/ECHASK') as file:
         listing = file.read()
         lexer.input(listing)
         output = parse(listing)
