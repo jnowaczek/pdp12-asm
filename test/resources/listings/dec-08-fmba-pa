@@ -1,0 +1,50 @@
+
+/TWO'S COMPLEMENT SINGLE PRECISION MULTIPLY ROUTINE
+/RETURN HIGH ORDER PRODUCT IN AC, LOW IN MP1
+
+MULT,     0
+          CLL
+          SPA                 /TEST FOR NEGATIVE MULTIPLIER
+          CMA CML IAC
+          DCA MP1             /STORE MULTIPLIER
+          DCA MP5
+          TAD I MULT
+          SNA                 /TEST FOR ZERO MULTIPLICAND
+	      JMP MPSN+2          /JMP IF MULTIPLICAND=0
+          SPA                 /TEST FOR NEGATIVE MULTIPLICAND
+          CMA CML IAC
+          DCA MP2             /STORE MULTIPLICAND
+          TAD THIR
+          DCA MP3
+MP4,      TAD MP1             /MULTIPLY LOOP PROPER
+          RAR
+          DCA MP1
+          TAD MP5
+          SZL                 /TEST IF MULTIPLICAND SHOULD BE ADDED
+          TAD MP2
+          CLL RAR
+          DCA MP5
+          ISZ MP3             /TEST FOR END OF LOOP
+          JMP MP4
+          TAD MP1
+          RAR
+MPSN,     SZL
+          JMP COMP
+          DCA MP1
+          TAD MP5
+MPZ,      ISZ MULT            /EXIT TO CALLING PROGRAM
+          JMP I MULT
+COMP,     CMA CLL IAC         /COMPLEMENT PRODUCT
+          DCA MP1
+          TAD MP5
+          CMA
+          SZL
+          IAC
+          JMP MPZ
+THIR,     7764                /ELEVEN IN DECIMAL
+MP1,      0
+MP5,      0
+MP2,      0
+MP3,      0
+
+/PAUSE

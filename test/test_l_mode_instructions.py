@@ -1,7 +1,6 @@
 import unittest
 
 import asm_parse
-import pdp12_perm_sym
 
 
 # class BasicClassTests(unittest.TestCase):
@@ -27,6 +26,26 @@ class FileTests(unittest.TestCase):
 
         expected = []
         with open('./KALEIDOSCOPE.output') as assembly:
+            for line in assembly:
+                expected.append('{:0>4o}'.format(int(line.strip().split(' ')[1], 8)))
+        self.assertEqual(expected, result)
+
+    def test_moon(self):
+        with open('./MOON') as listing:
+            result = asm_parse.parse(listing.read())
+
+        expected = []
+        with open('./MOON.output') as assembly:
+            for line in assembly:
+                expected.append('{:0>4o}'.format(int(line.strip().split(' ')[1], 8)))
+        self.assertEqual(expected, result)
+
+    def test_music(self):
+        with open('./MUSIC') as listing:
+            result = asm_parse.parse(listing.read())
+
+        expected = []
+        with open('./MUSIC.output') as assembly:
             for line in assembly:
                 expected.append('{:0>4o}'.format(int(line.strip().split(' ')[1], 8)))
         self.assertEqual(expected, result)
