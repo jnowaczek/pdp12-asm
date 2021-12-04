@@ -1,0 +1,5 @@
+/TEXT Pseudo-Operation test
+/Example taken LAP6-DIAL Programmer's Reference Manual page 3-10
+
+*200
+TEXT ZSTRING OF TEXTZ
