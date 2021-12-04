@@ -56,3 +56,7 @@ class SimpleOutputTests(unittest.TestCase):
     def test_frqana(self):
         result, expected = self.read_and_assemble('FRQANA')
         self.assertEqual(expected, result)
+
+    def test_clcmth(self):
+        result, expected = self.read_and_assemble('CLCMTH')
+        self.assertEqual(expected, result)

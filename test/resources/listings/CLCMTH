@@ -1,0 +1,13 @@
+/Current Location Counter Math
+/Examples taken LAP6-DIAL Programmer's Reference Manual page 3-6
+
+*20
+LMODE
+CALL=JMP .
+0027
+
+*200
+JMP .+2
+
+*300
+.+400
