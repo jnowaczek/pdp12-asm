@@ -1,10 +1,7 @@
 # PDP12-ASM
-![Inside the PDP12](https://i.ibb.co/VLcn1dM/20190524-132442.jpg)
 
-
-This is a project...
-
-  - Assembler for PDP12 code
+This project is a cross-assembler for the DEC PDP-12, a 1970's era minicomputer. Because the PDP-12 is a unique, dual
+instruction set architecture existing cross-assemblers do not fully support it.
 
 
 ### Installation
