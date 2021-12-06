@@ -11,7 +11,7 @@ mem_origin = 0o4020
 
 current_location = 0
 user_symbols = {}
-additional_pass = False
+need_second_pass = False
 
 precedence = (
 )
@@ -31,8 +31,8 @@ def symbol_lookup(name):
     if name in user_symbols:
         return user_symbols[name]
     else:
-        global additional_pass
-        additional_pass = True
+        global need_second_pass
+        need_second_pass = True
         return 0o0000
 
 
@@ -65,6 +65,7 @@ def p_pseudo_with_args(p):
             current_location = 0o2000 * p[2]
         else:
             raise SyntaxError
+
 
 def p_pseudo_no_args(p):
     """pseudo_no_args : OCTAL
@@ -224,16 +225,16 @@ def p_error(p):
 
 
 def parse(file):
-    global additional_pass, user_symbols
+    global need_second_pass, user_symbols
     l = lap6_lex()
     l.input(file)
     tokens = list(l.lextokens)
     output = []
     p = yacc.yacc()
-    mc = p.parse(file)
-    if additional_pass:
+    mc = p.parse(file, debug=True)
+    if need_second_pass:
         reset_parser()
-        return parse(file)
+        mc = p.parse(file, debug=True)
     if mc is not None:
         for instruction in mc:
             output.append('{:0>4o} {:0>4o}'.format(instruction[0], instruction[1]))
@@ -241,11 +242,11 @@ def parse(file):
 
 
 def reset_parser():
-    global mode, radix, current_location, additional_pass
+    global mode, radix, current_location, need_second_pass
     mode = 'lmode'
     radix = 8
     current_location = 0o4020
-    additional_pass = False
+    need_second_pass = False
 
 
 if __name__ == '__main__':
