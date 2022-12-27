@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 
-from . import model
-from . import pdp12_perm_sym
-from .asm_lexer import lap6_lex
+import pdp12_asm.model as model
+import pdp12_asm.pdp12_perm_sym as pdp12_perm_sym
+from pdp12_asm.asm_lexer import lap6_lex
 
 # Initial settings ref. Chapter 3 of "PDP-12 LAP6-DIAL Programmer's Reference Manual"
 # Start in LINC mode with octal radix at address 0o4020
@@ -246,7 +246,7 @@ def reset_parser():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('test/resources/listings/ECHASK') as file:
+    with open('test/resources/listings/PATTERNS') as file:
         listing = file.read()
         lexer.input(listing)
         output = parse(listing)
