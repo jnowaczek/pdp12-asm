@@ -32,22 +32,28 @@ class MemoryReferenceTests(unittest.TestCase):
         for instruction in filter(lambda i: pdp12_perm_sym.pmode_instructions[i]['class'] == 'P_MEMORY_REFERENCE',
                                   pdp12_perm_sym.pmode_instructions):
             test_string = 'PMODE\n' + instruction + '\n'
-            expected = pdp12_perm_sym.pmode_instructions[instruction]['opcode']
+            expected_opcode = pdp12_perm_sym.pmode_instructions[instruction]['opcode']
+            expected = model.Program()
+            expected.append(model.ProgramEntry(0o4020, expected_opcode))
             asm_parse.reset_parser()
-            self.assertEqual(['4020 {:0>4o}'.format(expected)], asm_parse.parse(test_string))
+            self.assertEqual(expected, asm_parse.parse(test_string))
 
     def test_argument(self):
         for instruction in filter(lambda i: pdp12_perm_sym.pmode_instructions[i]['class'] == 'P_MEMORY_REFERENCE',
                                   pdp12_perm_sym.pmode_instructions):
             test_string = 'PMODE\n' + instruction + ' 300' + '\n'
-            expected = pdp12_perm_sym.pmode_instructions[instruction]['opcode'] + 0o300
+            expected_opcode = pdp12_perm_sym.pmode_instructions[instruction]['opcode'] + 0o300
+            expected = model.Program()
+            expected.append(model.ProgramEntry(0o4020, expected_opcode))
             asm_parse.reset_parser()
-            self.assertEqual(['4020 {:0>4o}'.format(expected)], asm_parse.parse(test_string))
+            self.assertEqual(expected, asm_parse.parse(test_string))
 
     def test_argument_indirect(self):
         for instruction in filter(lambda i: pdp12_perm_sym.pmode_instructions[i]['class'] == 'P_MEMORY_REFERENCE',
                                   pdp12_perm_sym.pmode_instructions):
             test_string = 'PMODE\n' + instruction + ' I 300' + '\n'
-            expected = 0o400 + pdp12_perm_sym.pmode_instructions[instruction]['opcode'] + 0o300
+            expected_opcode = 0o400 + pdp12_perm_sym.pmode_instructions[instruction]['opcode'] + 0o300
+            expected = model.Program()
+            expected.append(model.ProgramEntry(0o4020, expected_opcode))
             asm_parse.reset_parser()
-            self.assertEqual(['4020 {:0>4o}'.format(expected)], asm_parse.parse(test_string))
+            self.assertEqual(expected, asm_parse.parse(test_string))
