@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-import pdp12_perm_sym
+from . import pdp12_perm_sym
 
 
 def lap6_lex():

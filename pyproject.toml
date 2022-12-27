@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pdp12-asm"
+version = "0.0.0"
+description = "PDP-12 Cross Assembler"
+authors = ["Julian Nowaczek <jnowaczek@users.noreply.github.com>"]
+license = "GPL-2.0-or-later"
+packages = [
+    { include = "pdp12_asm", from = "src" },
+    { include = "dec_papertape_format", from = "src" }
+]
+
+[tool.poetry.dependencies]
+ply = "^3.11"
+
+[tool.poetry.group.test.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,7 +1,8 @@
 import ply.yacc as yacc
 
-import pdp12_perm_sym
-from asm_lexer import lap6_lex
+from . import model
+from . import pdp12_perm_sym
+from .asm_lexer import lap6_lex
 
 # Initial settings ref. Chapter 3 of "PDP-12 LAP6-DIAL Programmer's Reference Manual"
 # Start in LINC mode with octal radix at address 0o4020
@@ -41,15 +42,13 @@ def p_program(p):
                | program empty
                | program machine_code"""
     if len(p) == 3:
-        if p[2] is None:
-            p[0] = p[1]
-        else:
+        if p[2] is not None:
             global current_location
-            p[1].append((current_location, p[2]))
-            p[0] = p[1]
+            p[1].append(model.ProgramEntry(current_location, p[2]))
             current_location += 1
+        p[0] = p[1]
     if len(p) == 2:
-        p[0] = []
+        p[0] = model.Program()
 
 
 def p_pseudo_op(p):
@@ -224,21 +223,17 @@ def p_error(p):
     print("Illegal symbol '%s'" % p)
 
 
-def parse(file):
+def parse(file) -> model.Program:
     global need_second_pass, user_symbols
     l = lap6_lex()
     l.input(file)
     tokens = list(l.lextokens)
-    output = []
     p = yacc.yacc()
-    mc = p.parse(file, debug=True)
+    program = p.parse(file, debug=True)
     if need_second_pass:
         reset_parser()
-        mc = p.parse(file, debug=True)
-    if mc is not None:
-        for instruction in mc:
-            output.append('{:0>4o} {:0>4o}'.format(instruction[0], instruction[1]))
-    return output
+        program = p.parse(file, debug=True)
+    return program
 
 
 def reset_parser():
@@ -251,9 +246,9 @@ def reset_parser():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('../test/ECHASK') as file:
+    with open('test/resources/listings/ECHASK') as file:
         listing = file.read()
         lexer.input(listing)
         output = parse(listing)
         print(output)
-        print('User Symbols: {}'.format(user_symbols))
+        print(f'User Symbols: {user_symbols}')
