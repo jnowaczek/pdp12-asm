@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-import pdp12_asm.pdp12_perm_sym as pdp12_perm_sym
+from . import pdp12_perm_sym
 
 
 def lap6_lex():
@@ -102,12 +102,3 @@ def lap6_lex():
 
     instance = lex.lex()
     return instance
-
-
-if __name__ == '__main__':
-    lexer = lap6_lex()
-    with open('../test/RIMLOADER') as listing:
-        lexer.input(listing.read())
-
-    for token in lexer:
-        print(token)

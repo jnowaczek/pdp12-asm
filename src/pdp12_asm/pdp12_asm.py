@@ -1,8 +1,6 @@
 import argparse
 import textwrap
 
-from __init__ import __version__
-
 
 def rim_format(assembly):
     raise NotImplementedError()
@@ -12,7 +10,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PDP-12 LAP6-DIAL Assembler',
                                      formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-v', '--version', help='print the version number and exit', action='version',
-                        version='%(prog)s {}'.format(__version__))
+                        version=f'%(prog)s not good enough')
     parser.add_argument('-f', metavar='FORMAT',
                         help=textwrap.dedent(
                             '''\

@@ -21,7 +21,7 @@ def _encode_opcode(opcode: int) -> bytes:
     return bytes([upper, lower])
 
 
-def _encode_leader(length=1) -> bytes:
+def _encode_leader(length) -> bytes:
     return b'\x80' * length
 
 
@@ -29,18 +29,18 @@ def encode_instruction(entry: model.ProgramEntry) -> bytes:
     return _encode_address(entry.location) + _encode_opcode(entry.opcode)
 
 
-class RIMEncoder:
-    def __int__(self, leader_length=4):
-        self.leader_length = leader_length
+def encode(program: model.Program) -> bytes:
+    result = bytearray()
 
-    def encode(self, program: model.Program) -> bytes:
-        result = bytearray()
+    for entry in program.entry_list:
+        result += encode_instruction(entry)
 
-        result += _encode_leader(self.leader_length)
+    return bytes(result)
 
-        for entry in program.entry_list:
-            result += encode_instruction(entry)
 
-        result += _encode_leader(self.leader_length)
+def pad_leader(data: bytes, leader_length: int) -> bytes:
+    return bytes(_encode_leader(leader_length) + data + _encode_leader(leader_length))
 
-        return bytes(result)
+
+def encode_and_pad(program: model.Program, leader_length: int = 4) -> bytes:
+    return pad_leader(encode(program), leader_length)

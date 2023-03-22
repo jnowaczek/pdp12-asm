@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
-import pdp12_asm.model as model
-import pdp12_asm.pdp12_perm_sym as pdp12_perm_sym
+from pdp12_asm import model
+from pdp12_asm import pdp12_perm_sym
 from pdp12_asm.asm_lexer import lap6_lex
 
 # Initial settings ref. Chapter 3 of "PDP-12 LAP6-DIAL Programmer's Reference Manual"
@@ -148,7 +148,6 @@ def p_set_origin(p):
     """empty : ASTERISK NUMBER STATEMENT_END"""
     global current_location
     current_location = int(p[2], base=radix)
-    p[0] = None
 
 
 def p_assignment(p):
@@ -246,7 +245,7 @@ def reset_parser():
 
 if __name__ == '__main__':
     lexer = lap6_lex()
-    with open('test/resources/listings/PATTERNS') as file:
+    with open('../../test/resources/listings/bootloader') as file:
         listing = file.read()
         lexer.input(listing)
         output = parse(listing)
