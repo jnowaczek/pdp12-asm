@@ -17,6 +17,9 @@ ply = "^3.11"
 [tool.poetry.scripts]
 pdp12-asm = "pdp12_asm.pdp12_asm:main"
 
+[tool.poetry-dynamic-versioning]
+enable = true
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
