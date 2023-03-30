@@ -222,16 +222,16 @@ def p_error(p):
     print("Illegal symbol '%s'" % p)
 
 
-def parse(file) -> model.Program:
+def parse(file, debug=False) -> model.Program:
     global need_second_pass, user_symbols
     l = lap6_lex()
     l.input(file)
     tokens = list(l.lextokens)
     p = yacc.yacc()
-    program = p.parse(file, debug=True)
+    program = p.parse(file, debug=debug)
     if need_second_pass:
         reset_parser()
-        program = p.parse(file, debug=True)
+        program = p.parse(file, debug=debug)
     return program
 
 

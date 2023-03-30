@@ -3,7 +3,7 @@ import unittest
 
 from pdp12_asm import asm_parse
 from pdp12_asm import model
-from dec_papertape_format import RIMEncoder
+from output_format import rim_formatter
 
 
 def simple_read_and_assemble(listing_path, output_path):
@@ -28,7 +28,7 @@ def rim_read_and_assemble(listing_path, output_path):
 
             asm_parse.reset_parser()
             program = asm_parse.parse(listing.read())
-            result = RIMEncoder.encode_and_pad(program)
+            result = rim_formatter.encode_and_pad(program)
 
     return result, expected
 

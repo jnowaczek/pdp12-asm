@@ -3,16 +3,19 @@ name = "pdp12-asm"
 version = "0.0.0"
 description = "PDP-12 Cross Assembler"
 authors = ["Julian Nowaczek <jnowaczek@users.noreply.github.com>"]
-license = "GPL-2.0-or-later"
+license = "GPL-3.0-or-later"
 packages = [
     { include = "pdp12_asm", from = "src" },
-    { include = "dec_papertape_format", from = "src" }
+    { include = "output_format", from = "src" }
 ]
 
 [tool.poetry.dependencies]
 ply = "^3.11"
 
 [tool.poetry.group.test.dependencies]
+
+[tool.poetry.scripts]
+pdp12-asm = 'pdp12_asm.pdp12_asm:main'
 
 [build-system]
 requires = ["poetry-core"]

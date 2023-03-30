@@ -1,10 +1,13 @@
+from typing import List
+
+
 class ProgramEntry:
     def __init__(self, location: int, opcode: int):
         self.location = location
         self.opcode = opcode
 
     def __repr__(self):
-        return f'{self.location:0>4o} {self.opcode:0>4o}'
+        return f"{self.location:0>4o} {self.opcode:0>4o}"
 
     def __eq__(self, other):
         if not isinstance(other, ProgramEntry):
@@ -14,13 +17,16 @@ class ProgramEntry:
 
 class Program:
     def __init__(self):
-        self.entry_list = []
+        self.entry_list: List[ProgramEntry] = []
 
     def append(self, entry: ProgramEntry):
         self.entry_list.append(entry)
 
     def __repr__(self):
         return "".join(repr(self.entry_list))
+
+    def __str__(self):
+        return "\n".join([str(entry) for entry in self.entry_list])
 
     def __eq__(self, other):
         if not isinstance(other, Program):
