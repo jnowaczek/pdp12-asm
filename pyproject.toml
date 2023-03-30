@@ -15,7 +15,7 @@ ply = "^3.11"
 [tool.poetry.group.test.dependencies]
 
 [tool.poetry.scripts]
-pdp12-asm = 'pdp12_asm.pdp12_asm:main'
+pdp12-asm = "pdp12_asm.pdp12_asm:main"
 
 [build-system]
 requires = ["poetry-core"]

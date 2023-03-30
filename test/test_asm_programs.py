@@ -11,8 +11,8 @@ def simple_read_and_assemble(listing_path, output_path):
         with open(output_path) as output:
             expected = model.Program()
             for line in output:
-                location = int(line.strip().split(' ')[0], 8)
-                instruction = int(line.strip().split(' ')[1], 8)
+                location = int(line.strip().split(" ")[0], 8)
+                instruction = int(line.strip().split(" ")[1], 8)
                 expected.append(model.ProgramEntry(location, instruction))
 
             asm_parse.reset_parser()
