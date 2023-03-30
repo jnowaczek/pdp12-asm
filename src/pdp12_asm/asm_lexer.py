@@ -97,7 +97,7 @@ def lap6_lex():
     t_ignore = " \t;"
 
     def t_error(t):
-        print("Illegal character "%s"" % t.value[0])
+        print(f"Illegal character \"{t.value[0]}\"")
         t.lexer.skip(1)
 
     instance = lex.lex()

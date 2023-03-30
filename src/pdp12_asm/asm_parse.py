@@ -219,7 +219,7 @@ def p_blank_lines(p):
 
 
 def p_error(p):
-    print("Illegal symbol "%s"" % p)
+    print(f"Illegal symbol \"{p}\"")
 
 
 def parse(file, debug=False) -> model.Program:
