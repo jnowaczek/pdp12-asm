@@ -109,3 +109,5 @@ venv.bak/
 
 /src/parser.out
 /src/parsetab.py
+/.pdm-python
+/.pdm-build/

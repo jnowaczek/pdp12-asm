@@ -1,26 +1,26 @@
-[tool.poetry]
+[project]
 name = "pdp12-asm"
 version = "0.0.0"
 description = "PDP-12 Cross Assembler"
-authors = ["Julian Nowaczek <jnowaczek@users.noreply.github.com>"]
-license = "GPL-3.0-or-later"
-packages = [
-    { include = "pdp12_asm", from = "src" },
-    { include = "output_format", from = "src" }
+authors = [
+    { name = "Julian Nowaczek", email = "jnowaczek@users.noreply.github.com" },
 ]
+dependencies = [
+    "ply<4.0,>=3.11",
+]
+requires-python = ">=3.7,<4.0"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
 
-[tool.poetry.dependencies]
-python = "^3.7"
-ply = "^3.11"
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+test = []
 
-[tool.poetry.group.test.dependencies]
-
-[tool.poetry.scripts]
-pdp12-asm = "pdp12_asm.pdp12_asm:main"
-
-[tool.poetry-dynamic-versioning]
-enable = true
-
+[tool.pdm.build]
+includes = ["src/pdp12_asm", "src/output_format"]
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project.scripts]
+pdp12-asm = "pdp12_asm.pdp12_asm:main"
